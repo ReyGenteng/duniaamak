@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dunia Amak</title>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(120deg, #f0e5ff, #e0f7fa);
+      color: #333;
+      padding: 20px;
+      animation: fadeIn 1.5s ease;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      color: #6a1b9a;
+      animation: pulse 3s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    section.card {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      transition: 0.3s;
+    }
+    section.card:hover {
+      transform: scale(1.02);
+    }
+    h2 {
+      font-size: 1.5rem;
+      color: #4a148c;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      color: #888;
+      font-size: 0.9rem;
+    }
+    .ambon-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+    .ambon-gallery img {
+      width: 220px;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s;
+    }
+    .ambon-gallery img:hover {
+      transform: scale(1.05);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop controls style="display:block; margin: 10px auto;">
+    <source src="https://cdn.pixabay.com/audio/2022/03/11/audio_75a441c857.mp3" type="audio/mpeg">
+    Musik tidak didukung browser ini.
+  </audio>
+
+  <header>
+    <h1>🌟 Wilayah Khusus Amak & Ambon 🌟</h1>
+  </header>
+
+  <section class="card">
+    <h2>Tentang Dunia Amak</h2>
+    <p>Dunia ini adalah tempat khusus yang penuh imajinasi, rasa, dan kreativitas milik Amak. Dari coding, cerita, hiburan, sampai hal-hal pribadi — semua bisa hidup di sini. ❤️</p>
+  </section>
+
+  <section class="card">
+    <h2>Aktivitas Seru</h2>
+    <p>Di dunia ini, Amak bisa bikin game HTML, nonton Zootopia, top-up lewat AxelStore, bahkan bikin web banking AxelPay. Semua dengan gaya Amak sendiri!</p>
+  </section>
+
+  <section class="card">
+    <h2>Sahabat Sejati: Ambon 🐢</h2>
+    <p>Ambon, kura-kura kesayangan Amak, selalu bikin hari jadi lebih ceria. Nih foto-foto lucunya waktu lagi ngaca~</p>
+    <div class="ambon-gallery">
+      <img src="ambon1.jpg" alt="Ambon lucu 1">
+      <img src="ambon2.jpg" alt="Ambon lucu 2">
+      <img src="ambon3.jpg" alt="Ambon lucu 3">
+      <img src="ambon4.jpg" alt="Ambon lucu 4">
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Dunia Amak. Dibuat dengan semangat dan rasa. 💜
+  </footer>
+</body>
+</html>
