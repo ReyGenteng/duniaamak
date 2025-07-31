@@ -1,110 +1,150 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dunia Amak</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(120deg, #f0e5ff, #e0f7fa);
-      color: #333;
-      padding: 20px;
-      animation: fadeIn 1.5s ease;
-    }
-    header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    header h1 {
-      font-size: 2.5rem;
-      color: #6a1b9a;
-    }
-    section.card {
-      background: white;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      transition: 0.3s;
-    }
-    section.card:hover {
-      transform: scale(1.02);
-    }
-    h2 {
-      font-size: 1.5rem;
-      color: #4a148c;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      color: #888;
-      font-size: 0.9rem;
-    }
-    .ambon-gallery {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 15px;
-    }
-    .ambon-gallery img {
-      width: 200px;
-      height: auto;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: transform 0.3s;
-    }
-    .ambon-gallery img:hover {
-      transform: scale(1.05);
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReyStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family:'Poppins',sans-serif;
+    margin:0;
+    background:#ffffff;
+    color:#222;
+  }
+
+  header {
+    text-align:center;
+    padding:50px 20px 40px;
+    background: linear-gradient(135deg,#4CAF50,#2CC5B4);
+    color: white;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  header img {
+    width:100px;height:100px;border-radius:50%;
+    object-fit:cover;
+    box-shadow:0 4px 10px rgba(0,0,0,0.25);
+    border:3px solid white;
+    background:white;
+  }
+  header h1 {
+    font-size:2.4rem;margin:20px 0 10px;font-weight:700;
+  }
+  header p {
+    font-size:1.1rem;max-width:500px;margin:0 auto;color:#eefdf5;
+  }
+
+  section.about {
+    max-width:700px;
+    margin:40px auto 20px;
+    padding:0 20px;
+    text-align:center;
+  }
+  section.about h2 {
+    font-size:1.5rem;
+    margin-bottom:15px;
+  }
+  section.about p {
+    color:#444;
+    line-height:1.6;
+  }
+
+  .container {
+    max-width:1000px;
+    margin:20px auto;
+    padding:20px;
+    display:grid;
+    gap:25px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  }
+
+  .card {
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.06);
+    text-align:center;
+    transition:.25s;
+  }
+  .card:hover {
+    transform:translateY(-5px);
+    box-shadow:0 6px 24px rgba(0,0,0,0.1);
+  }
+  .card img {
+    max-width:100%;
+    border-radius:14px;
+    margin-bottom:15px;
+  }
+  .card h3 {
+    font-size:1.25rem;
+    margin:10px 0 5px;
+    font-weight:600;
+  }
+  .card p {
+    font-size:1rem;
+    margin-bottom:18px;
+    color:#444;
+  }
+  .btn {
+    display:block;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    padding:12px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:1rem;
+    transition:background 0.25s;
+  }
+  .btn:hover { background:#1ebe5c; }
+
+  footer {
+    text-align:center;
+    padding:30px 20px;
+    font-size:0.9rem;
+    color:#888;
+    margin-top:40px;
+    border-top:1px solid #eee;
+  }
+</style>
 </head>
 <body>
 
-  <!-- Musik Latar -->
-  <audio autoplay loop controls>
-    <source src="https://cdn.pixabay.com/audio/2022/03/11/audio_75a441c857.mp3" type="audio/mpeg">
-    Browser kamu tidak mendukung audio.
-  </audio>
+<header>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/R_logo.svg/768px-R_logo.svg.png" alt="Logo ReyStore">
+  <h1>ReyStore</h1>
+  <p>Tempat beli produk digital & layanan online dengan mudah</p>
+</header>
 
-  <header>
-    <h1>🌟 Wilayah Khusus Amak & Ambon 🌟</h1>
-  </header>
+<section class="about">
+  <h2>Apa itu ReyStore?</h2>
+  <p>
+    ReyStore adalah toko online sederhana yang menyediakan berbagai produk digital dan layanan online.
+    Semua pemesanan dilakukan dengan mudah melalui WhatsApp tanpa ribet.
+    Kami fokus pada pelayanan cepat, harga terjangkau, dan proses yang aman.
+  </p>
+</section>
 
-  <section class="card">
-    <h2>Tentang Dunia Amak</h2>
-    <p>Dunia ini adalah tempat khusus yang penuh imajinasi, rasa, dan kreativitas milik Amak. Dari coding, cerita, hiburan, sampai hal-hal pribadi — semua bisa hidup di sini. ❤️</p>
-  </section>
+<div class="container">
+  <div class="card">
+    <img src="produk1.jpg" alt="Produk 1">
+    <h3>Produk A</h3>
+    <p>Rp10.000</p>
+    <a class="btn" href="https://wa.me/6287887028120?text=Halo,%20saya%20mau%20pesan%20Produk%20A">Pesan via WhatsApp</a>
+  </div>
 
-  <section class="card">
-    <h2>Aktivitas Seru</h2>
-    <p>Di dunia ini, Amak bisa main sama kura kura dan seru seruan bareng animasi kura kura!</p>
-  </section>
+  <div class="card">
+    <img src="produk2.jpg" alt="Produk 2">
+    <h3>Produk B</h3>
+    <p>Rp20.000</p>
+    <a class="btn" href="https://wa.me/6287887028120?text=Halo,%20saya%20mau%20pesan%20Produk%20B">Pesan via WhatsApp</a>
+  </div>
+</div>
 
-  <section class="card">
-    <h2>Sahabat Sejati: Ambon 🐢</h2>
-    <p>Ambon, kura-kura kesayangan Amak, selalu bikin hari jadi lebih ceria. Nih foto-foto lucunya waktu lagi ngaca~</p>
-    <div class="ambon-gallery">
-      <img src="https://reygenteng.github.io/dunia-amak/ambon1.jpg" alt="Ambon 1" />
-      <img src="https://reygenteng.github.io/dunia-amak/ambon2.jpg" alt="Ambon 2" />
-      <img src="https://reygenteng.github.io/dunia-amak/ambon3.jpg" alt="Ambon 3" />
-      <img src="https://reygenteng.github.io/dunia-amak/ambon4.jpg" alt="Ambon 4" />
-    </div>
-  </section>
+<footer>
+  © 2025 ReyStore – Semua Hak Dilindungi
+</footer>
 
-  <footer>
-    &copy; 2025 Dunia Amak. Dibuat dengan semangat dan rasa. 💜
-  </footer>
 </body>
 </html>
