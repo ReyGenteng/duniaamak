@@ -22,11 +22,7 @@
     font-weight: bold;
     background: #00aaff;
   }
-  .container {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
-  }
+  .container { display: flex; flex: 1; overflow: hidden; }
   .rooms {
     width: 30%;
     max-width: 280px;
@@ -39,86 +35,47 @@
     cursor: pointer;
     border-bottom: 1px solid #333;
   }
-  .room:hover {
-    background: #333;
-  }
+  .room:hover { background: #333; }
   .messages {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #1e1e1e;
+    flex: 1; display: flex; flex-direction: column; background: #1e1e1e;
+  }
+  #chatHeader {
+    padding: 10px; background: #111; text-align: center;
+    border-bottom: 1px solid #444; font-weight: bold;
   }
   #messagesBox {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
+    flex: 1; overflow-y: auto; padding: 15px;
+    display: flex; flex-direction: column;
   }
   .msg {
-    margin: 5px 0;
-    padding: 8px 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 6px;
-    max-width: 80%;
+    margin: 5px 0; padding: 8px 12px; border-radius: 12px; max-width: 75%;
+    word-wrap: break-word;
   }
-  .msg strong {
-    color: #00aaff;
-  }
+  .msg.user { background: #333; align-self: flex-start; }
+  .msg.admin { background: #0078d7; align-self: flex-end; }
+  .msg.info { background: #555; align-self: center; font-style: italic; }
   .input-area {
-    display: flex;
-    padding: 10px;
-    border-top: 1px solid #444;
-    background: #222;
+    display: flex; padding: 10px; border-top: 1px solid #444; background: #222;
   }
   .input-area input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    margin-right: 10px;
-    background: #333;
-    color: white;
+    flex: 1; padding: 10px; border: none; border-radius: 8px;
+    margin-right: 10px; background: #333; color: white;
   }
   .input-area button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 8px;
-    background: #00aaff;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
+    padding: 10px 20px; border: none; border-radius: 8px;
+    background: #00aaff; color: white; font-weight: bold; cursor: pointer;
   }
-  .input-area button:hover {
-    background: #0088cc;
-  }
-  .back-btn {
-    display: none;
-  }
+  .input-area button:hover { background: #0088cc; }
+  .back-btn { display: none; }
 
-  /* Tampilan HP */
   @media (max-width: 768px) {
-    .container {
-      flex-direction: column;
-    }
-    .rooms {
-      width: 100%;
-      max-width: 100%;
-      border-right: none;
-    }
-    .messages {
-      width: 100%;
-      display: none;
-    }
-    .messages.active {
-      display: flex;
-    }
+    .container { flex-direction: column; }
+    .rooms { width: 100%; max-width: 100%; border-right: none; }
+    .messages { width: 100%; display: none; }
+    .messages.active { display: flex; }
     .back-btn {
-      display: block;
-      background: #00aaff;
-      color: white;
-      border: none;
-      padding: 10px;
-      width: 100%;
-      cursor: pointer;
+      display: block; background: #00aaff; color: white;
+      border: none; padding: 10px; width: 100%; cursor: pointer;
     }
   }
 </style>
@@ -136,6 +93,7 @@
   <div class="rooms" id="rooms"></div>
   <div class="messages">
     <button class="back-btn" onclick="kembaliDaftar()">← Kembali ke daftar</button>
+    <div id="chatHeader">Pilih chat</div>
     <div id="messagesBox"></div>
     <div class="input-area">
       <input id="reply" placeholder="Tulis balasan...">
@@ -146,105 +104,131 @@
 </div>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getDatabase, ref, onChildAdded, onChildRemoved, push, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+import { getDatabase, ref, onChildAdded, onChildChanged, onChildRemoved, get, push, set, update } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
-    authDomain: "reystore-support.firebaseapp.com",
-    databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
-    projectId: "reystore-support",
-    storageBucket: "reystore-support.firebasestorage.app",
-    messagingSenderId: "446513200960",
-    appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
-    measurementId: "G-YEBFKLREK5"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
+  authDomain: "reystore-support.firebaseapp.com",
+  databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
+  projectId: "reystore-support",
+  storageBucket: "reystore-support.firebasestorage.app",
+  messagingSenderId: "446513200960",
+  appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
+  measurementId: "G-YEBFKLREK5"
+};
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-  window.cekKode = function() {
-    const kode = document.getElementById("kode").value;
-    if (kode === "reyadmin") {
-      document.getElementById("login").style.display = "none";
-      document.getElementById("app").style.display = "flex";
-    } else {
-      alert("Kode salah!");
-    }
-  };
+let adminName = "";
+window.cekKode = function() {
+  const kode = document.getElementById("kode").value;
+  if (kode === "reyadmin") adminName = "Rey";
+  else if (kode === "nindiaadmin") adminName = "Nindia";
+  else return alert("Kode salah!");
 
-  const roomsDiv = document.getElementById('rooms');
-  const messagesBox = document.getElementById('messagesBox');
-  let currentChat = null;
-  let currentRoomDiv = null;
-  let unsubscribe = null;
+  document.getElementById("login").style.display = "none";
+  document.getElementById("app").style.display = "flex";
+};
 
-  // tampilkan daftar chat
-  onChildAdded(ref(db, "chats"), (snap) => {
-    const data = snap.val();
-    const room = document.createElement('div');
+const roomsDiv = document.getElementById('rooms');
+const messagesBox = document.getElementById('messagesBox');
+const chatHeader = document.getElementById('chatHeader');
+
+let currentChat = null;
+let currentOwner = null;
+let unsubscribe = null;
+
+// daftar chat
+function refreshRoomList(id, data) {
+  let room = roomsDiv.querySelector(`.room[data-id="${id}"]`);
+  if (!room) {
+    room = document.createElement('div');
     room.className = 'room';
-    room.dataset.id = snap.key;
-    room.textContent = data.username || '(Tanpa nama)';
-    room.onclick = () => openChat(snap.key, room);
+    room.dataset.id = id;
     roomsDiv.appendChild(room);
-  });
-
-  // jika chat dihapus, hilangkan juga dari daftar
-  onChildRemoved(ref(db, "chats"), (snap) => {
-    const elem = roomsDiv.querySelector(`.room[data-id="${snap.key}"]`);
-    if (elem) elem.remove();
-    if (currentChat === snap.key) {
-      currentChat = null;
-      messagesBox.innerHTML = '';
-    }
-  });
-
-  function openChat(id, roomElement) {
-    currentChat = id;
-    currentRoomDiv = roomElement;
-    messagesBox.innerHTML = '';
-
-    if (unsubscribe) unsubscribe();
-
-    const chatRef = ref(db, "chats/" + id + "/messages");
-    unsubscribe = onChildAdded(chatRef, (s) => {
-      const d = s.val();
-      const div = document.createElement('div');
-      div.className = 'msg';
-      div.style.alignSelf = (d.sender === 'admin') ? 'flex-end' : 'flex-start';
-      div.innerHTML = `<strong>${d.sender}:</strong> ${d.text}`;
-      messagesBox.appendChild(div);
-      messagesBox.scrollTop = messagesBox.scrollHeight;
-    });
-
-    if (window.innerWidth <= 768) {
-      document.querySelector('.rooms').style.display = 'none';
-      document.querySelector('.messages').classList.add('active');
-    }
   }
-
-  window.kembaliDaftar = function() {
-    document.querySelector('.rooms').style.display = 'block';
-    document.querySelector('.messages').classList.remove('active');
-  }
-
-  window.sendReply = function() {
-    const text = document.getElementById('reply').value;
-    if (!currentChat || !text) return;
-    const msgRef = push(ref(db, "chats/" + currentChat + "/messages"));
-    set(msgRef, { sender:"admin", text, time:Date.now() });
-    document.getElementById('reply').value = '';
-  }
-
-  window.hapusChat = function() {
-    if (!currentChat) return;
-    set(ref(db, "chats/" + currentChat), null);
-    messagesBox.innerHTML = '';
-    alert("Chat sudah dihapus");
+  room.textContent = (data.username || "(Tanpa nama)") + (data.owner ? " - " + data.owner : " - Belum diambil");
+  room.onclick = () => openChat(id);
+}
+onChildAdded(ref(db, "chats"), snap => refreshRoomList(snap.key, snap.val()));
+onChildChanged(ref(db, "chats"), snap => refreshRoomList(snap.key, snap.val()));
+onChildRemoved(ref(db, "chats"), snap => {
+  const elem = roomsDiv.querySelector(`.room[data-id="${snap.key}"]`);
+  if (elem) elem.remove();
+  if (currentChat === snap.key) {
     currentChat = null;
-    if (window.innerWidth <= 768) kembaliDaftar();
+    messagesBox.innerHTML = '';
+    chatHeader.textContent = "Pilih chat";
   }
+});
+
+async function openChat(id) {
+  currentChat = id;
+  messagesBox.innerHTML = '';
+
+  const chatSnap = await get(ref(db, "chats/" + id));
+  const chatData = chatSnap.val();
+  currentOwner = chatData.owner || null;
+
+  // Jika belum ada owner, ambil chat ini
+  if (!currentOwner) {
+    await update(ref(db, "chats/" + id), { owner: adminName });
+    currentOwner = adminName;
+    const infoMsg = push(ref(db, "chats/" + id + "/messages"));
+    set(infoMsg, { sender: "info", text: "Kamu telah terhubung dengan admin " + adminName, time: Date.now() });
+  }
+
+  chatHeader.textContent = (chatData.username || "(Tanpa nama)") + " - " + currentOwner;
+
+  if (unsubscribe) unsubscribe();
+  const chatRef = ref(db, "chats/" + id + "/messages");
+  unsubscribe = onChildAdded(chatRef, (s) => {
+    const d = s.val();
+    const div = document.createElement('div');
+    div.className = 'msg';
+    if (d.sender === 'admin') div.classList.add('admin');
+    else if (d.sender === 'info') div.classList.add('info');
+    else div.classList.add('user');
+    div.textContent = (d.sender === 'info') ? d.text : d.text;
+    messagesBox.appendChild(div);
+    messagesBox.scrollTop = messagesBox.scrollHeight;
+  });
+
+  // mode HP
+  if (window.innerWidth <= 768) {
+    document.querySelector('.rooms').style.display = 'none';
+    document.querySelector('.messages').classList.add('active');
+  }
+}
+
+window.kembaliDaftar = function() {
+  document.querySelector('.rooms').style.display = 'block';
+  document.querySelector('.messages').classList.remove('active');
+};
+
+window.sendReply = function() {
+  if (!currentChat || !document.getElementById('reply').value) return;
+  if (currentOwner !== adminName) {
+    alert("Chat ini sudah ditangani admin lain!");
+    return;
+  }
+  const text = document.getElementById('reply').value;
+  const msgRef = push(ref(db, "chats/" + currentChat + "/messages"));
+  set(msgRef, { sender:"admin", text, time:Date.now() });
+  document.getElementById('reply').value = '';
+};
+
+window.hapusChat = function() {
+  if (!currentChat) return;
+  set(ref(db, "chats/" + currentChat), null);
+  messagesBox.innerHTML = '';
+  chatHeader.textContent = "Pilih chat";
+  alert("Chat sudah dihapus");
+  currentChat = null;
+  if (window.innerWidth <= 768) kembaliDaftar();
+};
 </script>
 </body>
 </html>
