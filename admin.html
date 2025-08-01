@@ -1,155 +1,147 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat Support - ReyStore (Admin)</title>
-<style>
-  * {box-sizing: border-box;}
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eceff1;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    width: 100%;
-    max-width: 500px;
-    height: 100vh;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  }
-  .chat-header {
-    background: #ff9800;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #f5f5f5;
-  }
-  .bubble {
-    max-width: 80%;
-    padding: 8px 12px;
-    margin-bottom: 10px;
-    border-radius: 15px;
-    clear: both;
-    position: relative;
-    font-size: 14px;
-  }
-  .time {
-    font-size: 10px;
-    color: #444;
-    display: block;
-    margin-top: 4px;
-    text-align: right;
-  }
-  .bubble.user {
-    background: #00aaff;
-    color: white;
-    float: right;
-    border-bottom-right-radius: 0;
-  }
-  .bubble.admin {
-    background: #e0e0e0;
-    float: left;
-    border-bottom-left-radius: 0;
-  }
-  .chat-input {
-    display: flex;
-    padding: 10px;
-    background: #fff;
-    border-top: 1px solid #ddd;
-  }
-  .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-right: 10px;
-    outline: none;
-  }
-  .chat-input button {
-    background: #ff9800;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    font-size: 18px;
-  }
-</style>
-</head>
-<body>
-<div class="chat-container">
-  <div class="chat-header">Admin Panel ReyStore</div>
-  <div class="messages" id="messages"></div>
-  <div class="chat-input">
-    <input type="text" id="pesan" placeholder="Tulis pesan...">
-    <button onclick="kirimPesan()">➤</button>
-  </div>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
-    authDomain: "reystore-support.firebaseapp.com",
-    databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
-    projectId: "reystore-support",
-    storageBucket: "reystore-support.firebasestorage.app",
-    messagingSenderId: "446513200960",
-    appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
-    measurementId: "G-YEBFKLREK5"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
-  const chatId = prompt("Masukkan chatId user yang mau di-handle:");
-  const messagesDiv = document.getElementById("messages");
-
-  function formatWIB(timestamp){
-    const date = new Date(timestamp);
-    return date.toLocaleTimeString("id-ID",{hour:'2-digit',minute:'2-digit'});
-  }
-
-  function addBubble(sender, text, time) {
-    const div = document.createElement("div");
-    div.className = `bubble ${sender}`;
-    div.innerHTML = `${text}<span class="time">${formatWIB(time)}</span>`;
-    messagesDiv.appendChild(div);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
-
-  // Load chat user
-  onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {
-    const d = snap.val();
-    addBubble(d.sender, d.text, d.time || Date.now());
-  });
-
-  function kirimPesan() {
-    const pesan = document.getElementById("pesan").value.trim();
-    if (!pesan) return;
-    const msgRef = push(ref(db, "chats/" + chatId + "/messages"));
-    set(msgRef, { sender: "admin", text: pesan, time: Date.now() });
-    document.getElementById("pesan").value = "";
-  }
-
-  window.kirimPesan = kirimPesan;
-</script>
-</body>
+<!DOCTYPE html>  <html lang="id">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Chat Support - ReyStore</title>  
+<style>  
+  * {box-sizing: border-box;}  
+  body {  
+    margin: 0;  
+    font-family: Arial, sans-serif;  
+    background: #eceff1;  
+    height: 100vh;  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+  }  
+  .chat-container {  
+    display: flex;  
+    flex-direction: column;  
+    background: white;  
+    width: 100%;  
+    max-width: 500px;  
+    height: 100vh;  
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);  
+  }  
+  .chat-header {  
+    background: #00aaff;  
+    color: white;  
+    padding: 15px;  
+    font-size: 18px;  
+    font-weight: bold;  
+    text-align: center;  
+  }  
+  .messages {  
+    flex: 1;  
+    padding: 15px;  
+    overflow-y: auto;  
+    background: #f5f5f5;  
+  }  
+  .bubble {  
+    max-width: 80%;  
+    padding: 10px 14px;  
+    margin-bottom: 10px;  
+    border-radius: 15px;  
+    clear: both;  
+  }  
+  .bubble.user {  
+    background: #00aaff;  
+    color: white;  
+    float: right;  
+    border-bottom-right-radius: 0;  
+  }  
+  .bubble.admin {  
+    background: #e0e0e0;  
+    float: left;  
+    border-bottom-left-radius: 0;  
+  }  
+  .chat-input {  
+    display: flex;  
+    padding: 10px;  
+    background: #fff;  
+    border-top: 1px solid #ddd;  
+  }  
+  .chat-input input {  
+    flex: 1;  
+    padding: 10px;  
+    border: 1px solid #ccc;  
+    border-radius: 20px;  
+    margin-right: 10px;  
+    outline: none;  
+  }  
+  .chat-input button {  
+    background: #00aaff;  
+    color: white;  
+    border: none;  
+    border-radius: 50%;  
+    width: 45px;  
+    height: 45px;  
+    cursor: pointer;  
+    font-size: 18px;  
+  }  
+</style>  
+</head>  
+<body>  
+<div class="chat-container">  
+  <div class="chat-header">Support ReyStore</div>  
+  <div class="messages" id="messages"></div>  
+  <div class="chat-input">  
+    <input type="text" id="nama" placeholder="Nama kamu" style="max-width:120px;">  
+    <input type="text" id="pesan" placeholder="Tulis pesan...">  
+    <button onclick="kirimPesan()">➤</button>  
+  </div>  
+</div>  <script type="module">  
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";  
+  import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";  
+  
+  const firebaseConfig = {  
+    apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",  
+    authDomain: "reystore-support.firebaseapp.com",  
+    databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",  
+    projectId: "reystore-support",  
+    storageBucket: "reystore-support.firebasestorage.app",  
+    messagingSenderId: "446513200960",  
+    appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",  
+    measurementId: "G-YEBFKLREK5"  
+  };  
+  
+  const app = initializeApp(firebaseConfig);  
+  const db = getDatabase(app);  
+  
+  let chatId = null;  
+  const messagesDiv = document.getElementById("messages");  
+  
+  function addBubble(sender, text) {  
+    const div = document.createElement("div");  
+    div.className = `bubble ${sender}`;  
+    div.textContent = text;  
+    messagesDiv.appendChild(div);  
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;  
+  }  
+  
+  function kirimPesan() {  
+    const nama = document.getElementById("nama").value.trim();  
+    const pesan = document.getElementById("pesan").value.trim();  
+    if (!nama || !pesan) {  
+      alert("Isi nama dan pesan");  
+      return;  
+    }  
+  
+    if (!chatId) {  
+      chatId = push(ref(db, "chats")).key;  
+      set(ref(db, "chats/" + chatId + "/username"), nama);  
+  
+      onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {  
+        const d = snap.val();  
+        addBubble(d.sender, d.text);  
+      });  
+    }  
+  
+    const msgRef = push(ref(db, "chats/" + chatId + "/messages"));  
+    set(msgRef, { sender: "user", text: pesan, time: Date.now() });  
+    document.getElementById("pesan").value = "";  
+  }  
+  
+  window.kirimPesan = kirimPesan;  
+</script>  </body>  
 </html>
