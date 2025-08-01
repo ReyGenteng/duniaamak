@@ -44,6 +44,7 @@
     margin-bottom: 10px;
     border-radius: 15px;
     clear: both;
+    position: relative;
   }
   .bubble.user {
     background: #00aaff;
@@ -56,6 +57,12 @@
     float: left;
     border-bottom-left-radius: 0;
   }
+  .time {
+    font-size: 11px;
+    color: #444;
+    margin-top: 4px;
+  }
+  .bubble.user .time { color: #ddd; }
   .chat-input {
     display: flex;
     padding: 10px;
@@ -114,10 +121,19 @@
   let chatId = null;
   const messagesDiv = document.getElementById("messages");
 
-  function addBubble(sender, text) {
+  function formatWIB(timestamp) {
+    return new Intl.DateTimeFormat("id-ID", {
+      timeZone: "Asia/Jakarta",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(new Date(timestamp));
+  }
+
+  function addBubble(sender, text, time) {
     const div = document.createElement("div");
     div.className = `bubble ${sender}`;
-    div.textContent = text;
+    div.innerHTML = `${text}<div class="time">${formatWIB(time)}</div>`;
     messagesDiv.appendChild(div);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
@@ -136,7 +152,7 @@
 
       onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {
         const d = snap.val();
-        addBubble(d.sender, d.text);
+        addBubble(d.sender, d.text, d.time);
       });
     }
 
