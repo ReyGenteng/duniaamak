@@ -1,150 +1,116 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ReyStore</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-<style>
-  body {
-    font-family:'Poppins',sans-serif;
-    margin:0;
-    background:#ffffff;
-    color:#222;
-  }
-
-  header {
-    text-align:center;
-    padding:50px 20px 40px;
-    background: linear-gradient(135deg,#4CAF50,#2CC5B4);
-    color: white;
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
-  }
-  header img {
-    width:100px;height:100px;border-radius:50%;
-    object-fit:cover;
-    box-shadow:0 4px 10px rgba(0,0,0,0.25);
-    border:3px solid white;
-    background:white;
-  }
-  header h1 {
-    font-size:2.4rem;margin:20px 0 10px;font-weight:700;
-  }
-  header p {
-    font-size:1.1rem;max-width:500px;margin:0 auto;color:#eefdf5;
-  }
-
-  section.about {
-    max-width:700px;
-    margin:40px auto 20px;
-    padding:0 20px;
-    text-align:center;
-  }
-  section.about h2 {
-    font-size:1.5rem;
-    margin-bottom:15px;
-  }
-  section.about p {
-    color:#444;
-    line-height:1.6;
-  }
-
-  .container {
-    max-width:1000px;
-    margin:20px auto;
-    padding:20px;
-    display:grid;
-    gap:25px;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  }
-
-  .card {
-    background:#fff;
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 4px 20px rgba(0,0,0,0.06);
-    text-align:center;
-    transition:.25s;
-  }
-  .card:hover {
-    transform:translateY(-5px);
-    box-shadow:0 6px 24px rgba(0,0,0,0.1);
-  }
-  .card img {
-    max-width:100%;
-    border-radius:14px;
-    margin-bottom:15px;
-  }
-  .card h3 {
-    font-size:1.25rem;
-    margin:10px 0 5px;
-    font-weight:600;
-  }
-  .card p {
-    font-size:1rem;
-    margin-bottom:18px;
-    color:#444;
-  }
-  .btn {
-    display:block;
-    background:#25D366;
-    color:white;
-    text-decoration:none;
-    padding:12px;
-    border-radius:10px;
-    font-weight:600;
-    font-size:1rem;
-    transition:background 0.25s;
-  }
-  .btn:hover { background:#1ebe5c; }
-
-  footer {
-    text-align:center;
-    padding:30px 20px;
-    font-size:0.9rem;
-    color:#888;
-    margin-top:40px;
-    border-top:1px solid #eee;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reystore Support</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .box {
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #00bfff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      width: 100%;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #009acd;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      background: rgba(255,255,255,0.1);
+    }
+    .chat-ai-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff9800;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <header>Reyambon Support</header>
+  <main>
+    <div class="box">
+      <h2>Kirim Pesan ke Admin</h2>
+      <label>Nama:</label>
+      <input type="text" id="nama" placeholder="Nama kamu">
+      <label>Pesan:</label>
+      <textarea id="pesan" rows="5" placeholder="Tulis pesan..."></textarea>
+      <button onclick="kirimPesan()">Kirim</button>
+    </div>
+  </main>
 
-<header>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/R_logo.svg/768px-R_logo.svg.png" alt="Logo ReyStore">
-  <h1>ReyStore</h1>
-  <p>Tempat beli produk digital & layanan online dengan mudah</p>
-</header>
+  <button class="chat-ai-button" onclick="alert('Fitur chat AI belum aktif di versi GitHub Pages.')">
+    AI
+  </button>
 
-<section class="about">
-  <h2>Apa itu ReyStore?</h2>
-  <p>
-    ReyStore adalah toko online sederhana yang menyediakan berbagai produk digital dan layanan online.
-    Semua pemesanan dilakukan dengan mudah melalui WhatsApp tanpa ribet.
-    Kami fokus pada pelayanan cepat, harga terjangkau, dan proses yang aman.
-  </p>
-</section>
+  <footer>© 2025 Reyambon Support</footer>
 
-<div class="container">
-  <div class="card">
-    <img src="produk1.jpg" alt="Produk 1">
-    <h3>Produk A</h3>
-    <p>Rp10.000</p>
-    <a class="btn" href="https://wa.me/6287887028120?text=Halo,%20saya%20mau%20pesan%20Produk%20A">Pesan via WhatsApp</a>
-  </div>
-
-  <div class="card">
-    <img src="produk2.jpg" alt="Produk 2">
-    <h3>Produk B</h3>
-    <p>Rp20.000</p>
-    <a class="btn" href="https://wa.me/6287887028120?text=Halo,%20saya%20mau%20pesan%20Produk%20B">Pesan via WhatsApp</a>
-  </div>
-</div>
-
-<footer>
-  © 2025 ReyStore – Semua Hak Dilindungi
-</footer>
-
+  <script>
+    function kirimPesan() {
+      const nama = document.getElementById('nama').value.trim();
+      const pesan = document.getElementById('pesan').value.trim();
+      if (!nama || !pesan) {
+        alert('Nama dan pesan wajib diisi.');
+        return;
+      }
+      alert('Pesan berhasil dicatat. (Integrasi database bisa ditambah nanti)');
+    }
+  </script>
 </body>
 </html>
