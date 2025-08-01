@@ -90,6 +90,37 @@
   .input-area button:hover {
     background: #0088cc;
   }
+  .back-btn {
+    display: none;
+  }
+
+  /* Tampilan HP */
+  @media (max-width: 768px) {
+    .container {
+      flex-direction: column;
+    }
+    .rooms {
+      width: 100%;
+      max-width: 100%;
+      border-right: none;
+    }
+    .messages {
+      width: 100%;
+      display: none;
+    }
+    .messages.active {
+      display: flex;
+    }
+    .back-btn {
+      display: block;
+      background: #00aaff;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+    }
+  }
 </style>
 </head>
 <body>
@@ -104,6 +135,7 @@
 <div class="container" id="app" style="display:none;">
   <div class="rooms" id="rooms"></div>
   <div class="messages">
+    <button class="back-btn" onclick="kembaliDaftar()">← Kembali ke daftar</button>
     <div id="messagesBox"></div>
     <div class="input-area">
       <input id="reply" placeholder="Tulis balasan...">
@@ -131,7 +163,7 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // Login admin
+  // login admin
   window.cekKode = function() {
     const kode = document.getElementById("kode").value;
     if (kode === "reyadmin") {
@@ -147,7 +179,7 @@
   let currentChat = null;
   let unsubscribe = null;
 
-  // List semua chat
+  // daftar chat
   onChildAdded(ref(db, "chats"), (snap) => {
     const data = snap.val();
     const room = document.createElement('div');
@@ -173,6 +205,17 @@
       messagesBox.appendChild(div);
       messagesBox.scrollTop = messagesBox.scrollHeight;
     });
+
+    // mode HP
+    if (window.innerWidth <= 768) {
+      document.querySelector('.rooms').style.display = 'none';
+      document.querySelector('.messages').classList.add('active');
+    }
+  }
+
+  window.kembaliDaftar = function() {
+    document.querySelector('.rooms').style.display = 'block';
+    document.querySelector('.messages').classList.remove('active');
   }
 
   window.sendReply = function() {
@@ -188,6 +231,10 @@
     set(ref(db, "chats/" + currentChat), null);
     messagesBox.innerHTML = '';
     alert("Chat sudah dihapus");
+    // kalau di HP balik ke daftar
+    if (window.innerWidth <= 768) {
+      kembaliDaftar();
+    }
   }
 </script>
 </body>
