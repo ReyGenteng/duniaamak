@@ -1,151 +1,135 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beli Robux - Chat Support</title>
+<style>
     body {
-      background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-      animation: fadeIn 1s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    header {
-      text-align: center;
-      padding: 20px;
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: 1px;
-    }
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to bottom right, #101010, #282828);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
     .box {
-      background: rgba(255,255,255,0.1);
-      border-radius: 20px;
-      padding: 25px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
-      animation: slideUp 0.8s ease;
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
     }
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    h1 {
+        text-align: center;
+        margin-top: 0;
     }
-    .box h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 22px;
-    }
-    label {
-      display: block;
-      margin: 12px 0 6px;
-      font-weight: 500;
+    input, textarea, button {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
     }
     input, textarea {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-    textarea {
-      resize: none;
+        background: rgba(255,255,255,0.1);
+        color: white;
     }
     button {
-      background: #00c3ff;
-      color: white;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      width: 100%;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 15px;
-      transition: background 0.3s ease;
+        background: #00aaff;
+        color: white;
+        cursor: pointer;
+        font-weight: bold;
     }
     button:hover {
-      background: #009acd;
+        background: #0088cc;
     }
-    footer {
-      text-align: center;
-      padding: 15px;
-      font-size: 13px;
-      background: rgba(255,255,255,0.1);
-    }
-    .chat-ai-button {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #ff9800;
-      color: white;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-weight: bold;
-      font-size: 14px;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease;
-    }
-    .chat-ai-button:hover {
-      transform: scale(1.1);
-    }
-  </style>
+</style>
 </head>
 <body>
-  <header>Support</header>
-  <main>
-    <div class="box">
-      <h2>Hubungi Kami</h2>
-      <label>Nama</label>
-      <input type="text" id="nama" placeholder="Nama kamu">
-      <label>Pesan</label>
-      <textarea id="pesan" rows="5" placeholder="Tulis pesan..."></textarea>
-      <button onclick="kirimPesan()">Kirim</button>
-    </div>
-  </main>
+<div class="box">
+    <h1>Chat Support</h1>
+    <input id="nama" type="text" placeholder="Masukkan nama kamu">
+    <textarea id="pesan" rows="3" placeholder="Tulis pesan kamu..."></textarea>
+    <button onclick="kirimPesan()">Kirim Pesan</button>
+</div>
 
-  <button class="chat-ai-button" onclick="alert('Fitur AI akan ditambahkan nanti.')">
-    AI
-  </button>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-  <footer>© 2025 Support</footer>
+  // Konfigurasi Firebase (punyamu)
+  const firebaseConfig = {
+    apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
+    authDomain: "reystore-support.firebaseapp.com",
+    databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
+    projectId: "reystore-support",
+    storageBucket: "reystore-support.firebasestorage.app",
+    messagingSenderId: "446513200960",
+    appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
+    measurementId: "G-YEBFKLREK5"
+  };
 
-  <script>
-    function kirimPesan() {
-      const nama = document.getElementById('nama').value.trim();
-      const pesan = document.getElementById('pesan').value.trim();
-      if (!nama || !pesan) {
-        alert('Nama dan pesan wajib diisi.');
-        return;
-      }
-      alert('Pesan berhasil dikirim! (Contoh, nanti bisa masuk database)');
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  let chatId = null;
+  const messagesDiv = document.createElement("div");
+  messagesDiv.style.height = "200px";
+  messagesDiv.style.overflowY = "auto";
+  messagesDiv.style.background = "rgba(255,255,255,0.1)";
+  messagesDiv.style.marginTop = "15px";
+  messagesDiv.style.padding = "10px";
+  messagesDiv.style.borderRadius = "8px";
+  document.querySelector(".box").insertBefore(messagesDiv, document.querySelector("button"));
+
+  function scrollBottom() {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+
+  function addMessage(sender, text) {
+    const p = document.createElement("p");
+    p.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    messagesDiv.appendChild(p);
+    scrollBottom();
+  }
+
+  function kirimPesan() {
+    const nama = document.getElementById('nama').value.trim();
+    const pesan = document.getElementById('pesan').value.trim();
+    if (!nama || !pesan) {
+      alert('Nama dan pesan wajib diisi.');
+      return;
     }
-  </script>
+
+    if (!chatId) {
+      // Buat chatId baru saat pertama kali user kirim pesan
+      chatId = push(ref(db, "chats")).key;
+      set(ref(db, "chats/" + chatId + "/username"), nama);
+
+      // Dengarkan balasan admin
+      onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {
+        const data = snap.val();
+        addMessage(data.sender, data.text);
+      });
+    }
+
+    // Kirim pesan user
+    const msgRef = push(ref(db, "chats/" + chatId + "/messages"));
+    set(msgRef, {
+      sender: "user",
+      text: pesan,
+      time: Date.now()
+    });
+
+    document.getElementById('pesan').value = "";
+  }
+
+  window.kirimPesan = kirimPesan;
+</script>
 </body>
 </html>
