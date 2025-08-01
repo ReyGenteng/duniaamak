@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Support - ReyStore</title>
+<title>Chat Support - ReyStore (Admin)</title>
 <style>
   * {box-sizing: border-box;}
   body {
@@ -20,7 +20,7 @@
     flex-direction: column;
     background: white;
     width: 100%;
-    max-width: 600px;
+    max-width: 500px;
     height: 100vh;
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
   }
@@ -40,29 +40,31 @@
   }
   .bubble {
     max-width: 80%;
-    padding: 10px 14px;
+    padding: 8px 12px;
     margin-bottom: 10px;
     border-radius: 15px;
     clear: both;
     position: relative;
+    font-size: 14px;
+  }
+  .time {
+    font-size: 10px;
+    color: #444;
+    display: block;
+    margin-top: 4px;
+    text-align: right;
   }
   .bubble.user {
     background: #00aaff;
     color: white;
-    float: left;
-    border-bottom-left-radius: 0;
-  }
-  .bubble.admin {
-    background: #e0e0e0;
     float: right;
     border-bottom-right-radius: 0;
   }
-  .time {
-    font-size: 11px;
-    margin-top: 4px;
-    color: #333;
+  .bubble.admin {
+    background: #e0e0e0;
+    float: left;
+    border-bottom-left-radius: 0;
   }
-  .bubble.user .time { color: #ddd; }
   .chat-input {
     display: flex;
     padding: 10px;
@@ -91,17 +93,17 @@
 </head>
 <body>
 <div class="chat-container">
-  <div class="chat-header">Panel Admin</div>
+  <div class="chat-header">Admin Panel ReyStore</div>
   <div class="messages" id="messages"></div>
   <div class="chat-input">
-    <input type="text" id="pesan" placeholder="Balas pesan...">
-    <button onclick="kirimBalasan()">➤</button>
+    <input type="text" id="pesan" placeholder="Tulis pesan...">
+    <button onclick="kirimPesan()">➤</button>
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getDatabase, ref, onChildAdded, push, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+  import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
@@ -117,46 +119,37 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  let currentChatId = null;
+  const chatId = prompt("Masukkan chatId user yang mau di-handle:");
   const messagesDiv = document.getElementById("messages");
 
-  function formatWIB(timestamp) {
-    return new Intl.DateTimeFormat("id-ID", {
-      timeZone: "Asia/Jakarta",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    }).format(new Date(timestamp));
+  function formatWIB(timestamp){
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString("id-ID",{hour:'2-digit',minute:'2-digit'});
   }
 
   function addBubble(sender, text, time) {
     const div = document.createElement("div");
     div.className = `bubble ${sender}`;
-    div.innerHTML = `${text}<div class="time">${formatWIB(time)}</div>`;
+    div.innerHTML = `${text}<span class="time">${formatWIB(time)}</span>`;
     messagesDiv.appendChild(div);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  // Ambil chat pertama
-  onChildAdded(ref(db, "chats"), (snap) => {
-    if (!currentChatId) {
-      currentChatId = snap.key;
-      onChildAdded(ref(db, "chats/" + currentChatId + "/messages"), (msgSnap) => {
-        const d = msgSnap.val();
-        addBubble(d.sender, d.text, d.time);
-      });
-    }
+  // Load chat user
+  onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {
+    const d = snap.val();
+    addBubble(d.sender, d.text, d.time || Date.now());
   });
 
-  function kirimBalasan() {
+  function kirimPesan() {
     const pesan = document.getElementById("pesan").value.trim();
-    if (!pesan || !currentChatId) return;
-    const msgRef = push(ref(db, "chats/" + currentChatId + "/messages"));
+    if (!pesan) return;
+    const msgRef = push(ref(db, "chats/" + chatId + "/messages"));
     set(msgRef, { sender: "admin", text: pesan, time: Date.now() });
     document.getElementById("pesan").value = "";
   }
 
-  window.kirimBalasan = kirimBalasan;
+  window.kirimPesan = kirimPesan;
 </script>
 </body>
 </html>
