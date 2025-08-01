@@ -3,174 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - ReyStore Support</title>
+<title>Admin Support - ReyStore</title>
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-    }
-    header {
-        text-align: center;
-        padding: 10px;
-        font-size: 20px;
-        background: rgba(0,0,0,0.3);
-    }
-    #login {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        flex: 1;
-    }
-    #chatPanel { display: none; flex: 1; }
-    .messages {
-        flex: 1;
-        overflow-y: auto;
-        padding: 10px;
-    }
-    .msg {
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.1);
-    }
-    .msg.admin { background: rgba(0,255,0,0.2); }
-    .msg .time { font-size: 12px; color: #bbb; margin-top: 4px; }
-    .input-area {
-        display: flex;
-        padding: 10px;
-        background: rgba(0,0,0,0.3);
-    }
-    .input-area input {
-        flex: 1;
-        padding: 8px;
-        border: none;
-        border-radius: 8px;
-        margin-right: 5px;
-    }
-    .input-area button {
-        background: #ffd369;
-        color: #222;
-        border: none;
-        padding: 8px 12px;
-        font-weight: bold;
-        border-radius: 8px;
-        cursor: pointer;
-    }
-    .delete-btn {
-        background: red;
-        border: none;
-        color: white;
-        padding: 3px 8px;
-        margin-top: 5px;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 12px;
-    }
+  * {box-sizing: border-box;}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eceff1;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 100%;
+    max-width: 600px;
+    height: 100vh;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+  .chat-header {
+    background: #ff9800;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f5f5f5;
+  }
+  .bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    clear: both;
+    position: relative;
+  }
+  .bubble.user {
+    background: #00aaff;
+    color: white;
+    float: left;
+    border-bottom-left-radius: 0;
+  }
+  .bubble.admin {
+    background: #e0e0e0;
+    float: right;
+    border-bottom-right-radius: 0;
+  }
+  .time {
+    font-size: 11px;
+    margin-top: 4px;
+    color: #333;
+  }
+  .bubble.user .time { color: #ddd; }
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+  }
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    outline: none;
+  }
+  .chat-input button {
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    font-size: 18px;
+  }
 </style>
 </head>
 <body>
-<header>Admin Panel Support</header>
-
-<div id="login">
-    <h2>Masukkan Kode Admin</h2>
-    <input type="password" id="adminCode" placeholder="Kode Admin">
-    <button onclick="loginAdmin()">Masuk</button>
-</div>
-
-<div id="chatPanel">
-    <div class="messages" id="messages"></div>
-    <div class="input-area">
-        <input type="text" id="msgInput" placeholder="Tulis pesan...">
-        <button onclick="sendMsg()">Kirim</button>
-    </div>
+<div class="chat-container">
+  <div class="chat-header">Panel Admin</div>
+  <div class="messages" id="messages"></div>
+  <div class="chat-input">
+    <input type="text" id="pesan" placeholder="Balas pesan...">
+    <button onclick="kirimBalasan()">➤</button>
+  </div>
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onChildAdded, push, remove, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+  import { getDatabase, ref, onChildAdded, push, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
-  authDomain: "reystore-support.firebaseapp.com",
-  databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
-  projectId: "reystore-support",
-  storageBucket: "reystore-support.firebasestorage.app",
-  messagingSenderId: "446513200960",
-  appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
-  measurementId: "G-YEBFKLREK5"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
+    authDomain: "reystore-support.firebaseapp.com",
+    databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
+    projectId: "reystore-support",
+    storageBucket: "reystore-support.firebasestorage.app",
+    messagingSenderId: "446513200960",
+    appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
+    measurementId: "G-YEBFKLREK5"
+  };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-let adminName = "";
-const allowedCodes = {
-    "nindiaadmin": "nindia",
-    "reyadmin": "rey"
-};
+  let currentChatId = null;
+  const messagesDiv = document.getElementById("messages");
 
-function getWIBTime() {
-    const date = new Date();
-    const options = { timeZone: 'Asia/Jakarta', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    return new Intl.DateTimeFormat('id-ID', options).format(date);
-}
+  function formatWIB(timestamp) {
+    return new Intl.DateTimeFormat("id-ID", {
+      timeZone: "Asia/Jakarta",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(new Date(timestamp));
+  }
 
-window.loginAdmin = function() {
-    const code = document.getElementById('adminCode').value.trim();
-    if (allowedCodes[code]) {
-        adminName = allowedCodes[code];
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('chatPanel').style.display = 'flex';
-        loadMessages();
-    } else {
-        alert("Kode salah!");
-    }
-};
-
-function loadMessages() {
-    const messagesRef = ref(db, "messages");
-    onChildAdded(messagesRef, (snapshot) => {
-        const data = snapshot.val();
-        addMessageToUI(snapshot.key, data.sender, data.text, data.time);
-    });
-}
-
-function addMessageToUI(id, sender, text, time) {
-    const messagesDiv = document.getElementById('messages');
-    const div = document.createElement('div');
-    div.className = 'msg' + (sender === adminName ? ' admin' : '');
-    div.innerHTML = `<strong>${sender}:</strong> ${text}
-                     <div class="time">${time || ''}</div>
-                     <button class="delete-btn" onclick="deleteMsg('${id}')">Hapus</button>`;
+  function addBubble(sender, text, time) {
+    const div = document.createElement("div");
+    div.className = `bubble ${sender}`;
+    div.innerHTML = `${text}<div class="time">${formatWIB(time)}</div>`;
     messagesDiv.appendChild(div);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
+  }
 
-window.sendMsg = function() {
-    const input = document.getElementById('msgInput');
-    const text = input.value.trim();
-    if (text === "") return;
+  // Ambil chat pertama
+  onChildAdded(ref(db, "chats"), (snap) => {
+    if (!currentChatId) {
+      currentChatId = snap.key;
+      onChildAdded(ref(db, "chats/" + currentChatId + "/messages"), (msgSnap) => {
+        const d = msgSnap.val();
+        addBubble(d.sender, d.text, d.time);
+      });
+    }
+  });
 
-    const messagesRef = ref(db, "messages");
-    push(messagesRef, {
-        sender: adminName,
-        text: text,
-        time: getWIBTime()
-    });
-    input.value = "";
-};
+  function kirimBalasan() {
+    const pesan = document.getElementById("pesan").value.trim();
+    if (!pesan || !currentChatId) return;
+    const msgRef = push(ref(db, "chats/" + currentChatId + "/messages"));
+    set(msgRef, { sender: "admin", text: pesan, time: Date.now() });
+    document.getElementById("pesan").value = "";
+  }
 
-window.deleteMsg = function(id) {
-    remove(ref(db, "messages/" + id));
-    document.getElementById('messages').innerHTML = "";
-    loadMessages();
-};
+  window.kirimBalasan = kirimBalasan;
 </script>
 </body>
 </html>
