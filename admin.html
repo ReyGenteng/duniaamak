@@ -147,7 +147,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getDatabase, ref, onChildAdded, push, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+  import { getDatabase, ref, onChildAdded, onChildRemoved, push, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
@@ -163,7 +163,6 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // login admin
   window.cekKode = function() {
     const kode = document.getElementById("kode").value;
     if (kode === "reyadmin") {
@@ -177,20 +176,33 @@
   const roomsDiv = document.getElementById('rooms');
   const messagesBox = document.getElementById('messagesBox');
   let currentChat = null;
+  let currentRoomDiv = null;
   let unsubscribe = null;
 
-  // daftar chat
+  // tampilkan daftar chat
   onChildAdded(ref(db, "chats"), (snap) => {
     const data = snap.val();
     const room = document.createElement('div');
     room.className = 'room';
+    room.dataset.id = snap.key;
     room.textContent = data.username || '(Tanpa nama)';
-    room.onclick = () => openChat(snap.key);
+    room.onclick = () => openChat(snap.key, room);
     roomsDiv.appendChild(room);
   });
 
-  function openChat(id) {
+  // jika chat dihapus, hilangkan juga dari daftar
+  onChildRemoved(ref(db, "chats"), (snap) => {
+    const elem = roomsDiv.querySelector(`.room[data-id="${snap.key}"]`);
+    if (elem) elem.remove();
+    if (currentChat === snap.key) {
+      currentChat = null;
+      messagesBox.innerHTML = '';
+    }
+  });
+
+  function openChat(id, roomElement) {
     currentChat = id;
+    currentRoomDiv = roomElement;
     messagesBox.innerHTML = '';
 
     if (unsubscribe) unsubscribe();
@@ -206,7 +218,6 @@
       messagesBox.scrollTop = messagesBox.scrollHeight;
     });
 
-    // mode HP
     if (window.innerWidth <= 768) {
       document.querySelector('.rooms').style.display = 'none';
       document.querySelector('.messages').classList.add('active');
@@ -231,10 +242,8 @@
     set(ref(db, "chats/" + currentChat), null);
     messagesBox.innerHTML = '';
     alert("Chat sudah dihapus");
-    // kalau di HP balik ke daftar
-    if (window.innerWidth <= 768) {
-      kembaliDaftar();
-    }
+    currentChat = null;
+    if (window.innerWidth <= 768) kembaliDaftar();
   }
 </script>
 </body>
