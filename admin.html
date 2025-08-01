@@ -94,22 +94,28 @@
 </head>
 <body>
 <header>Panel Admin - Chat</header>
-<div class="container">
-  <div class="rooms" id="rooms">
-    <!-- Daftar user chat -->
-  </div>
+
+<div id="login" style="text-align:center; padding:30px;">
+  <p>Masukkan kode admin:</p>
+  <input type="password" id="kode" placeholder="Kode admin">
+  <button onclick="cekKode()">Masuk</button>
+</div>
+
+<div class="container" id="app" style="display:none;">
+  <div class="rooms" id="rooms"></div>
   <div class="messages">
     <div id="messagesBox"></div>
     <div class="input-area">
       <input id="reply" placeholder="Tulis balasan...">
       <button onclick="sendReply()">Kirim</button>
+      <button style="margin-left:5px;background:red;" onclick="hapusChat()">Hapus</button>
     </div>
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getDatabase, ref, onChildAdded, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+  import { getDatabase, ref, onChildAdded, push, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
@@ -124,6 +130,17 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+
+  // Login admin
+  window.cekKode = function() {
+    const kode = document.getElementById("kode").value;
+    if (kode === "reyadmin") {
+      document.getElementById("login").style.display = "none";
+      document.getElementById("app").style.display = "flex";
+    } else {
+      alert("Kode salah!");
+    }
+  };
 
   const roomsDiv = document.getElementById('rooms');
   const messagesBox = document.getElementById('messagesBox');
@@ -144,10 +161,8 @@
     currentChat = id;
     messagesBox.innerHTML = '';
 
-    // Hapus listener lama (kalau ada)
     if (unsubscribe) unsubscribe();
 
-    // Pasang listener baru
     const chatRef = ref(db, "chats/" + id + "/messages");
     unsubscribe = onChildAdded(chatRef, (s) => {
       const d = s.val();
@@ -166,6 +181,13 @@
     const msgRef = push(ref(db, "chats/" + currentChat + "/messages"));
     set(msgRef, { sender:"admin", text, time:Date.now() });
     document.getElementById('reply').value = '';
+  }
+
+  window.hapusChat = function() {
+    if (!currentChat) return;
+    set(ref(db, "chats/" + currentChat), null);
+    messagesBox.innerHTML = '';
+    alert("Chat sudah dihapus");
   }
 </script>
 </body>
