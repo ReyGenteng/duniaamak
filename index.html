@@ -3,66 +3,100 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Beli Robux - Chat Support</title>
+<title>Chat Support - ReyStore</title>
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: linear-gradient(to bottom right, #101010, #282828);
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
-    .box {
-        background: rgba(255,255,255,0.05);
-        border-radius: 12px;
-        padding: 20px;
-        width: 90%;
-        max-width: 400px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.4);
-    }
-    h1 {
-        text-align: center;
-        margin-top: 0;
-    }
-    input, textarea, button {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border: none;
-        border-radius: 8px;
-        font-size: 14px;
-    }
-    input, textarea {
-        background: rgba(255,255,255,0.1);
-        color: white;
-    }
-    button {
-        background: #00aaff;
-        color: white;
-        cursor: pointer;
-        font-weight: bold;
-    }
-    button:hover {
-        background: #0088cc;
-    }
+  * {box-sizing: border-box;}
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eceff1;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  }
+  .chat-header {
+    background: #00aaff;
+    color: white;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f5f5f5;
+  }
+  .bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    clear: both;
+  }
+  .bubble.user {
+    background: #00aaff;
+    color: white;
+    float: right;
+    border-bottom-right-radius: 0;
+  }
+  .bubble.admin {
+    background: #e0e0e0;
+    float: left;
+    border-bottom-left-radius: 0;
+  }
+  .chat-input {
+    display: flex;
+    padding: 10px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+  }
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    margin-right: 10px;
+    outline: none;
+  }
+  .chat-input button {
+    background: #00aaff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    font-size: 18px;
+  }
 </style>
 </head>
 <body>
-<div class="box">
-    <h1>Chat Support</h1>
-    <input id="nama" type="text" placeholder="Masukkan nama kamu">
-    <textarea id="pesan" rows="3" placeholder="Tulis pesan kamu..."></textarea>
-    <button onclick="kirimPesan()">Kirim Pesan</button>
+<div class="chat-container">
+  <div class="chat-header">Support ReyStore</div>
+  <div class="messages" id="messages"></div>
+  <div class="chat-input">
+    <input type="text" id="nama" placeholder="Nama kamu" style="max-width:120px;">
+    <input type="text" id="pesan" placeholder="Tulis pesan...">
+    <button onclick="kirimPesan()">➤</button>
+  </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
   import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
 
-  // Konfigurasi Firebase (punyamu)
   const firebaseConfig = {
     apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
     authDomain: "reystore-support.firebaseapp.com",
@@ -78,55 +112,37 @@
   const db = getDatabase(app);
 
   let chatId = null;
-  const messagesDiv = document.createElement("div");
-  messagesDiv.style.height = "200px";
-  messagesDiv.style.overflowY = "auto";
-  messagesDiv.style.background = "rgba(255,255,255,0.1)";
-  messagesDiv.style.marginTop = "15px";
-  messagesDiv.style.padding = "10px";
-  messagesDiv.style.borderRadius = "8px";
-  document.querySelector(".box").insertBefore(messagesDiv, document.querySelector("button"));
+  const messagesDiv = document.getElementById("messages");
 
-  function scrollBottom() {
+  function addBubble(sender, text) {
+    const div = document.createElement("div");
+    div.className = `bubble ${sender}`;
+    div.textContent = text;
+    messagesDiv.appendChild(div);
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
   }
 
-  function addMessage(sender, text) {
-    const p = document.createElement("p");
-    p.innerHTML = `<strong>${sender}:</strong> ${text}`;
-    messagesDiv.appendChild(p);
-    scrollBottom();
-  }
-
   function kirimPesan() {
-    const nama = document.getElementById('nama').value.trim();
-    const pesan = document.getElementById('pesan').value.trim();
+    const nama = document.getElementById("nama").value.trim();
+    const pesan = document.getElementById("pesan").value.trim();
     if (!nama || !pesan) {
-      alert('Nama dan pesan wajib diisi.');
+      alert("Isi nama dan pesan");
       return;
     }
 
     if (!chatId) {
-      // Buat chatId baru saat pertama kali user kirim pesan
       chatId = push(ref(db, "chats")).key;
       set(ref(db, "chats/" + chatId + "/username"), nama);
 
-      // Dengarkan balasan admin
       onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {
-        const data = snap.val();
-        addMessage(data.sender, data.text);
+        const d = snap.val();
+        addBubble(d.sender, d.text);
       });
     }
 
-    // Kirim pesan user
     const msgRef = push(ref(db, "chats/" + chatId + "/messages"));
-    set(msgRef, {
-      sender: "user",
-      text: pesan,
-      time: Date.now()
-    });
-
-    document.getElementById('pesan').value = "";
+    set(msgRef, { sender: "user", text: pesan, time: Date.now() });
+    document.getElementById("pesan").value = "";
   }
 
   window.kirimPesan = kirimPesan;
