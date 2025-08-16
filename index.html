@@ -1,167 +1,235 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat Support - ReyStore</title>
-<style>
-  * {box-sizing: border-box;}
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eceff1;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .chat-container {
-    display: flex;
-    flex-direction: column;
-    background: white;
-    width: 100%;
-    max-width: 500px;
-    height: 100vh;
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  }
-  .chat-header {
-    background: #00aaff;
-    color: white;
-    padding: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .messages {
-    flex: 1;
-    padding: 15px;
-    overflow-y: auto;
-    background: #f5f5f5;
-  }
-  .bubble {
-    max-width: 80%;
-    padding: 10px 14px;
-    margin-bottom: 10px;
-    border-radius: 15px;
-    clear: both;
-    position: relative;
-  }
-  .bubble.user {
-    background: #00aaff;
-    color: white;
-    float: right;
-    border-bottom-right-radius: 0;
-  }
-  .bubble.admin {
-    background: #e0e0e0;
-    float: left;
-    border-bottom-left-radius: 0;
-  }
-  .time {
-    font-size: 11px;
-    color: #444;
-    margin-top: 4px;
-  }
-  .bubble.user .time { color: #ddd; }
-  .chat-input {
-    display: flex;
-    padding: 10px;
-    background: #fff;
-    border-top: 1px solid #ddd;
-  }
-  .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    margin-right: 10px;
-    outline: none;
-  }
-  .chat-input button {
-    background: #00aaff;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    cursor: pointer;
-    font-size: 18px;
-  }
-</style>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>RobuxNow.xyz - Artikel Terbaru</title>
+  
+  <link rel="icon" href="https://reygenteng.github.io/reybelirbx/favicon.ico" type="image/x-icon">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+    .red-number {
+      background-color: #ef4444; /* Tailwind red-500 */
+      color: white;
+      font-weight: 700;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+      margin-right: 0.5rem;
+    }
+    .mobile-menu {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+    .mobile-menu.active {
+        transform: translateX(0);
+    }
+  </style>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
+      authDomain: "reystore-support.firebaseapp.com",
+      databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
+      projectId: "reystore-support",
+      storageBucket: "reystore-support.firebasestorage.app",
+      messagingSenderId: "446513200960",
+      appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
+      measurementId: "G-YEBFKLREK5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const articlesRef = ref(db, 'articles');
+    
+    let allArticles = {};
+
+    const daftarArtikel = document.getElementById('daftar-artikel');
+    const searchBar = document.getElementById('search-bar');
+    const searchInput = document.getElementById('search-input');
+    const searchButton = document.getElementById('search-button');
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenuButton = document.getElementById('close-menu-button');
+    const searchToggle = document.getElementById('search-toggle');
+
+    const displayArticles = (articles) => {
+        daftarArtikel.innerHTML = '';
+        if (articles && Object.keys(articles).length > 0) {
+            const keys = Object.keys(articles).reverse();
+            let counter = 1;
+            keys.forEach((key) => {
+                const article = articles[key];
+                const articleItem = document.createElement('div');
+                articleItem.className = 'flex items-start mb-4 justify-between';
+                
+                articleItem.innerHTML = `
+                    <div class="flex items-start flex-1 mr-4">
+                        <span class="red-number">#${counter}</span>
+                        <a href="artikel.html?id=${key}" class="text-lg md:text-xl font-bold leading-tight hover:text-blue-600 transition-colors duration-200">
+                            ${article.judul}
+                        </a>
+                    </div>
+                `;
+                
+                daftarArtikel.appendChild(articleItem);
+                counter++;
+            });
+        } else {
+            daftarArtikel.innerHTML = '<p class="text-center text-gray-500">Belum ada artikel yang tersedia.</p>';
+        }
+    };
+
+    onValue(articlesRef, (snapshot) => {
+        allArticles = snapshot.val() || {};
+        displayArticles(allArticles);
+    });
+
+    searchButton.addEventListener('click', () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredArticles = {};
+        for (const key in allArticles) {
+            const article = allArticles[key];
+            if (article.judul.toLowerCase().includes(query) || article.isi.toLowerCase().includes(query)) {
+                filteredArticles[key] = article;
+            }
+        }
+        displayArticles(filteredArticles);
+    });
+    
+    searchToggle.addEventListener('click', () => {
+        searchBar.classList.toggle('hidden');
+    });
+
+    menuButton.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+    });
+    closeMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+    });
+  </script>
 </head>
-<body>
-<div class="chat-container">
-  <div class="chat-header">Support ReyStore</div>
-  <div class="messages" id="messages"></div>
-  <div class="chat-input">
-    <input type="text" id="nama" placeholder="Nama kamu" style="max-width:120px;">
-    <input type="text" id="pesan" placeholder="Tulis pesan...">
-    <button onclick="kirimPesan()">➤</button>
+<body class="bg-white text-black">
+  <div id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-gray-900 text-white z-40 mobile-menu">
+    <div class="p-5">
+      <button id="close-menu-button" class="text-3xl focus:outline-none mb-6">
+        <i class="fas fa-times"></i>
+      </button>
+      <ul class="space-y-4 text-xl">
+        <li><a href="index.html" class="hover:text-blue-500">Home</a></li>
+        <li><a href="about.html" class="hover:text-blue-500">About</a></li>
+        <li><a href="contact.html" class="hover:text-blue-500">Contact</a></li>
+      </ul>
+    </div>
   </div>
-</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getDatabase, ref, push, onChildAdded, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
+  <header
+    class="flex items-center justify-between px-5 py-4 border-b border-gray-200 sticky top-0 bg-white z-30"
+  >
+    <button id="menu-button" aria-label="Menu" class="text-3xl focus:outline-none">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="flex items-center space-x-2">
+      <img
+        alt="Logo RobuxNow.xyz"
+        class="w-12 h-12"
+        height="48"
+        src="https://reygenteng.github.io/reybelirbx/favicon.ico"
+        width="48"
+      />
+      <h1 class="font-extrabold text-3xl leading-none select-none tracking-tight">
+        RobuxNow.xyz
+      </h1>
+    </div>
+    <button id="search-toggle" aria-label="Search" class="text-2xl focus:outline-none">
+      <i class="fas fa-search"></i>
+    </button>
+  </header>
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyAcFRkbZT3PD3BDObS-7T1769uH5Macvd0",
-    authDomain: "reystore-support.firebaseapp.com",
-    databaseURL: "https://reystore-support-default-rtdb.firebaseio.com",
-    projectId: "reystore-support",
-    storageBucket: "reystore-support.firebasestorage.app",
-    messagingSenderId: "446513200960",
-    appId: "1:446513200960:web:cbd40ca4315a8bf47044a5",
-    measurementId: "G-YEBFKLREK5"
-  };
+  <nav class="bg-gray-50 border-b border-gray-200">
+    <div id="search-bar" class="hidden px-5 py-4 border-b border-gray-200">
+        <div class="flex">
+            <input type="text" id="search-input" placeholder="Cari artikel..." class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button id="search-button" class="bg-blue-600 text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition-colors duration-200"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <ul
+      class="flex justify-center space-x-12 py-4 font-semibold text-lg text-gray-900"
+    >
+      <li>
+        <a
+          href="index.html"
+          class="hover:text-blue-600 transition-colors duration-200"
+          >Home</a
+        >
+      </li>
+      <li>
+        <a
+          href="about.html"
+          class="hover:text-blue-600 transition-colors duration-200"
+          >About</a
+        >
+      </li>
+      <li>
+        <a
+          href="contact.html"
+          class="hover:text-blue-600 transition-colors duration-200"
+          >Contact</a
+        >
+      </li>
+    </ul>
+  </nav>
 
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  <main class="px-5 py-8 max-w-4xl mx-auto">
+    <p class="text-center mb-8 text-base text-gray-600 tracking-wide">
+      Advertisement
+    </p>
+    
+    <div id="daftar-artikel" class="space-y-6">
+      <p class="text-center text-gray-500">Memuat artikel...</p>
+    </div>
 
-  let chatId = null;
-  const messagesDiv = document.getElementById("messages");
+    <p class="text-center mt-12 mb-12 text-base text-gray-600 tracking-wide">
+      Advertisement
+    </p>
+  </main>
 
-  function formatWIB(timestamp) {
-    return new Intl.DateTimeFormat("id-ID", {
-      timeZone: "Asia/Jakarta",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    }).format(new Date(timestamp));
-  }
-
-  function addBubble(sender, text, time) {
-    const div = document.createElement("div");
-    div.className = `bubble ${sender}`;
-    div.innerHTML = `${text}<div class="time">${formatWIB(time)}</div>`;
-    messagesDiv.appendChild(div);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
-  }
-
-  function kirimPesan() {
-    const nama = document.getElementById("nama").value.trim();
-    const pesan = document.getElementById("pesan").value.trim();
-    if (!nama || !pesan) {
-      alert("Isi nama dan pesan");
-      return;
-    }
-
-    if (!chatId) {
-      chatId = push(ref(db, "chats")).key;
-      set(ref(db, "chats/" + chatId + "/username"), nama);
-
-      onChildAdded(ref(db, "chats/" + chatId + "/messages"), (snap) => {
-        const d = snap.val();
-        addBubble(d.sender, d.text, d.time);
-      });
-    }
-
-    const msgRef = push(ref(db, "chats/" + chatId + "/messages"));
-    set(msgRef, { sender: "user", text: pesan, time: Date.now() });
-    document.getElementById("pesan").value = "";
-  }
-
-  window.kirimPesan = kirimPesan;
-</script>
+  <footer class="bg-gray-900 text-gray-300 py-10 px-5">
+    <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h3 class="text-xl font-bold mb-4">RobuxNow.xyz</h3>
+        <p class="text-sm">
+          Situs ini menyajikan berbagai artikel dan tutorial menarik seputar game online. Dapatkan tips, trik, dan informasi terbaru langsung dari sumbernya!
+        </p>
+        <p class="mt-4 text-sm flex items-center">
+          <i class="fas fa-envelope mr-2"></i> Info@RobuxNow.xyz
+        </p>
+      </div>
+      <div>
+        <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href="index.html" class="hover:text-white transition-colors duration-200">Home</a></li>
+          <li><a href="about.html" class="hover:text-white transition-colors duration-200">About</a></li>
+          <li><a href="contact.html" class="hover:text-white transition-colors duration-200">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
+      <p>Copyright © 2025 <a href="index.html" class="hover:text-white">RobuxNow.xyz</a></p>
+    </div>
+  </footer>
 </body>
 </html>
