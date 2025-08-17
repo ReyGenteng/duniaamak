@@ -51,6 +51,32 @@
     const tombolSimpan = document.getElementById('tombol-simpan');
     const daftarArtikelAdmin = document.getElementById('daftar-artikel-admin');
 
+    // --- Bagian Cloudinary Baru ---
+    // Script dari Cloudinary
+    const cloudinaryScript = document.createElement('script');
+    cloudinaryScript.src = "https://upload-widget.cloudinary.com/global/all.js";
+    document.head.appendChild(cloudinaryScript);
+
+    // Fungsi untuk inisialisasi widget Cloudinary
+    cloudinaryScript.onload = () => {
+      var myWidget = cloudinary.createUploadWidget({
+          cloudName: 'dhn7omvbn', 
+          uploadPreset: 'robuxnow'
+      }, (error, result) => { 
+          if (!error && result && result.event === "success") { 
+              const imageUrl = result.info.secure_url;
+              // Tambahkan tag gambar ke dalam textarea isi artikel
+              isiInput.value += `\n<img src="${imageUrl}" alt="Gambar artikel" style="max-width: 100%;">`;
+              alert("Foto berhasil diunggah! Linknya sudah ditambahkan ke isi artikel.");
+          }
+      });
+
+      document.getElementById("upload_widget").addEventListener("click", function(){
+          myWidget.open();
+      }, false);
+    };
+    // --- Akhir Bagian Cloudinary Baru ---
+
     // Fungsi untuk menyimpan artikel
     const simpanArtikel = () => {
       const judul = judulInput.value.trim();
@@ -179,6 +205,9 @@
           placeholder="Tulis isi artikel di sini..."
           class="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         ></textarea>
+        <button id="upload_widget" class="bg-gray-400 text-white font-bold py-2 px-4 rounded-md hover:bg-gray-500 transition-colors duration-200 mt-2">
+            Upload Foto
+        </button>
       </div>
       <button
         id="tombol-simpan"
