@@ -30,15 +30,15 @@ app.get('/api-config.js', (req, res) => {
 
 // Route khusus untuk halaman produk
 app.get('/dashboard/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+    res.sendFile(path.join(__dirname, 'view', 'admin.html'));
 });
 
 app.get('/gzi/contact', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'contact.html'));
+    res.sendFile(path.join(__dirname, 'view', 'contact.html'));
 });
 
 app.get('/gzi/about', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'about.html'));
+    res.sendFile(path.join(__dirname, 'view', 'about.html'));
 });
 
 // Redirect untuk URL yang salah
