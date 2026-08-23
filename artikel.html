@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta content="width=device-width, initial-scale=1" name="viewport" />
-  <title>Artikel - RobuxNow.xyz</title>
+  <title>Artikel - GriyaZakat</title>
   
-  <link rel="icon" href="https://reygenteng.github.io/reybelirbx/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://griyazakat.biz.id/favicon.jpg" type="image/jpeg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -53,81 +53,81 @@
       onValue(articleRef, (snapshot) => {
         const article = snapshot.val();
         if (article) {
-          document.title = article.judul + " - RobuxNow.xyz";
+          document.title = article.judul + " - GriyaZakat";
           articleContent.innerHTML = `
-            <h2 class="font-extrabold text-4xl md:text-5xl leading-tight mb-8 text-gray-900">
+            <h2 class="font-extrabold text-4xl md:text-5xl leading-tight mb-8 text-orange-950">
               ${article.judul}
             </h2>
-            <div class="prose max-w-none text-gray-700 leading-relaxed text-lg">
+            <div class="prose max-w-none text-orange-800 leading-relaxed text-lg">
               <p>${article.isi.replace(/\n/g, '<br>')}</p>
             </div>
           `;
         } else {
-          articleContent.innerHTML = '<p class="text-center text-gray-500">Artikel tidak ditemukan. 😥</p>';
-          document.title = "Artikel Tidak Ditemukan - RobuxNow.xyz";
+          articleContent.innerHTML = '<p class="text-center text-orange-700">Artikel tidak ditemukan. 😥</p>';
+          document.title = "Artikel Tidak Ditemukan - GriyaZakat";
         }
       });
     } else {
-      articleContent.innerHTML = '<p class="text-center text-gray-500">Mohon pilih artikel untuk ditampilkan.</p>';
-      document.title = "Pilih Artikel - RobuxNow.xyz";
+      articleContent.innerHTML = '<p class="text-center text-orange-700">Mohon pilih artikel untuk ditampilkan.</p>';
+      document.title = "Pilih Artikel - GriyaZakat";
     }
   </script>
 </head>
-<body class="bg-white text-black">
+<body class="bg-orange-50 text-orange-950">
   <header
-    class="flex items-center justify-between px-5 py-4 border-b border-gray-200 sticky top-0 bg-white z-30"
+    class="flex items-center justify-between px-5 py-4 border-b border-orange-200 sticky top-0 bg-white z-30"
   >
     <div class="flex items-center space-x-2">
       <img
-        alt="Logo RobuxNow.xyz"
+        alt="Logo GriyaZakat"
         class="w-12 h-12"
         height="48"
-        src="https://reygenteng.github.io/reybelirbx/favicon.ico"
+        src="https://griyazakat.biz.id/favicon.jpg"
         width="48"
       />
-      <h1 class="font-extrabold text-3xl leading-none select-none tracking-tight">
-        RobuxNow.xyz
+      <h1 class="font-extrabold text-3xl leading-none select-none tracking-tight text-orange-500">
+        GriyaZakat
       </h1>
     </div>
   </header>
 
-  <nav class="bg-gray-50 border-b border-gray-200">
+  <nav class="bg-orange-100 border-b border-orange-200">
     <ul
-      class="flex justify-center space-x-12 py-4 font-semibold text-lg text-gray-900"
+      class="flex justify-center space-x-12 py-4 font-semibold text-lg text-orange-950"
     >
-      <li><a href="index.html" class="hover:text-blue-600 transition-colors duration-200">Home</a></li>
-      <li><a href="about.html" class="hover:text-blue-600 transition-colors duration-200">About</a></li>
-      <li><a href="contact.html" class="hover:text-blue-600 transition-colors duration-200">Contact</a></li>
+      <li><a href="index.html" class="hover:text-orange-500 transition-colors duration-200">Home</a></li>
+      <li><a href="about.html" class="hover:text-orange-500 transition-colors duration-200">About</a></li>
+      <li><a href="contact.html" class="hover:text-orange-500 transition-colors duration-200">Contact</a></li>
     </ul>
   </nav>
 
   <main class="px-5 py-8 max-w-4xl mx-auto">
-    <p class="text-center mb-8 text-base text-gray-600 tracking-wide">
+    <p class="text-center mb-8 text-base text-orange-800 tracking-wide">
       Advertisement
     </p>
 
     <div id="article-content">
-      <p class="text-center text-gray-500">Memuat artikel...</p>
+      <p class="text-center text-orange-700">Memuat artikel...</p>
     </div>
 
-    <p class="text-center mt-12 mb-12 text-base text-gray-600 tracking-wide">
+    <p class="text-center mt-12 mb-12 text-base text-orange-800 tracking-wide">
       Advertisement
     </p>
   </main>
 
-  <footer class="bg-gray-900 text-gray-300 py-10 px-5">
+  <footer class="bg-orange-950 text-orange-100 py-10 px-5">
     <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
-        <h3 class="text-xl font-bold mb-4">RobuxNow.xyz</h3>
+        <h3 class="text-xl font-bold mb-4 text-orange-400">GriyaZakat</h3>
         <p class="text-sm">
           Situs ini menyajikan berbagai artikel dan tutorial menarik seputar game online. Dapatkan tips, trik, dan informasi terbaru langsung dari sumbernya!
         </p>
         <p class="mt-4 text-sm flex items-center">
-          <i class="fas fa-envelope mr-2"></i> Info@RobuxNow.xyz
+          <i class="fas fa-envelope mr-2"></i> adminsby@griyazakat.biz.id
         </p>
       </div>
       <div>
-        <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+        <h3 class="text-xl font-bold mb-4 text-orange-300">Quick Links</h3>
         <ul class="space-y-2">
           <li><a href="index.html" class="hover:text-white transition-colors duration-200">Home</a></li>
           <li><a href="about.html" class="hover:text-white transition-colors duration-200">About</a></li>
@@ -135,8 +135,8 @@
         </ul>
       </div>
     </div>
-    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
-      <p>Copyright © 2025 <a href="index.html" class="hover:text-white">RobuxNow.xyz</a></p>
+    <div class="border-t border-orange-800 mt-8 pt-8 text-center text-sm">
+      <p>Copyright © 2025 <a href="index.html" class="hover:text-orange-400">GriyaZakat</a></p>
     </div>
   </footer>
 </body>
