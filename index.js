@@ -42,8 +42,8 @@ app.get('/gzi/about', (req, res) => {
 });
 
 // Redirect untuk URL yang salah
-app.get('/contact.html', (req, res) => {
-    res.redirect('/gzi/contact');
+app.get('/gzi/contact', (req, res) => {
+    res.redirect('/contact.html');
 });
 
 app.get('/about.html', (req, res) => {
