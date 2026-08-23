@@ -19,6 +19,10 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
     rel="stylesheet"
   />
+  
+  <!-- Memanggil konfigurasi API dari index.js -->
+  <script src="/api-config.js"></script>
+
   <style>
     body {
       font-family: "Inter", sans-serif;
@@ -44,18 +48,8 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDMrg2agHatw9REIXs0Pj-894UMhMB08NI",
-      authDomain: "databaseku-4e72e.firebaseapp.com",
-      databaseURL: "https://databaseku-4e72e-default-rtdb.firebaseio.com",
-      projectId: "databaseku-4e72e",
-      storageBucket: "databaseku-4e72e.firebasestorage.app",
-      messagingSenderId: "586627388924",
-      appId: "1:586627388924:web:8b39ecd9f5e5d34ee78e79",
-      measurementId: "G-JSP6R4FN49"
-    };
-
-    const app = initializeApp(firebaseConfig);
+    // Menggunakan konfigurasi dari index.js
+    const app = initializeApp(window.FIREBASE_CONFIG);
     const db = getDatabase(app);
     const articlesRef = ref(db, 'articles');
     
@@ -226,8 +220,8 @@
         <h3 class="text-xl font-bold mb-4 text-orange-300">Quick Links</h3>
         <ul class="space-y-2">
           <li><a href="index.html" class="hover:text-white transition-colors duration-200">Home</a></li>
-          <li><a href="about.html" class="hover:text-white transition-colors duration-200">About</a></li>
-          <li><a href="contact.html" class="hover:text-white transition-colors duration-200">Contact</a></li>
+          <li><a href="gzi/about" class="hover:text-white transition-colors duration-200">About</a></li>
+          <li><a href="gzi/contact" class="hover:text-white transition-colors duration-200">Contact</a></li>
         </ul>
       </div>
     </div>
