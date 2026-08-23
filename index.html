@@ -9,7 +9,7 @@
   
   <meta name="google-site-verification" content="OrtlPxSvkt7GaeoYg1uE_yfFXd9X0tZEaPRtIm54EEM" />
   
-  <link rel="icon" href="https://reygenteng.github.io/reybelirbx/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="https://griyazakat.biz.id/favicon.ico" type="image/x-icon">
   <script src="https://cdn.tailwindcss.com"></script>
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
@@ -23,7 +23,7 @@
     body {
       font-family: "Inter", sans-serif;
     }
-    .red-number {
+    .orange-number {
       background-color: #f97316; /* Tailwind orange-500 */
       color: white;
       font-weight: 700;
@@ -82,7 +82,7 @@
                 
                 articleItem.innerHTML = `
                     <div class="flex items-start flex-1 mr-4">
-                        <span class="red-number">#${counter}</span>
+                        <span class="orange-number">#${counter}</span>
                         <a href="artikel.html?id=${key}" class="text-lg md:text-xl font-bold leading-tight hover:text-orange-500 transition-colors duration-200">
                             ${article.judul}
                         </a>
@@ -93,7 +93,7 @@
                 counter++;
             });
         } else {
-            daftarArtikel.innerHTML = '<p class="text-center text-gray-500">Belum ada artikel yang tersedia.</p>';
+            daftarArtikel.innerHTML = '<p class="text-center text-orange-700">Belum ada artikel yang tersedia.</p>';
         }
     };
 
@@ -126,22 +126,22 @@
     });
   </script>
 </head>
-<body class="bg-white text-black">
-  <div id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-gray-900 text-white z-40 mobile-menu">
+<body class="bg-orange-50 text-orange-950">
+  <div id="mobile-menu" class="fixed top-0 left-0 w-64 h-full bg-orange-950 text-orange-50 z-40 mobile-menu">
     <div class="p-5">
-      <button id="close-menu-button" class="text-3xl focus:outline-none mb-6">
+      <button id="close-menu-button" class="text-3xl focus:outline-none mb-6 hover:text-orange-300">
         <i class="fas fa-times"></i>
       </button>
       <ul class="space-y-4 text-xl">
-        <li><a href="index.html" class="hover:text-orange-500">Home</a></li>
-        <li><a href="about.html" class="hover:text-orange-500">About</a></li>
-        <li><a href="contact.html" class="hover:text-orange-500">Contact</a></li>
+        <li><a href="index.html" class="hover:text-orange-300">Home</a></li>
+        <li><a href="about.html" class="hover:text-orange-300">About</a></li>
+        <li><a href="contact.html" class="hover:text-orange-300">Contact</a></li>
       </ul>
     </div>
   </div>
 
   <header
-    class="flex items-center justify-between px-5 py-4 border-b border-gray-200 sticky top-0 bg-white z-30"
+    class="flex items-center justify-between px-5 py-4 border-b border-orange-200 sticky top-0 bg-white z-30"
   >
     <button id="menu-button" aria-label="Menu" class="text-3xl focus:outline-none">
       <i class="fas fa-bars"></i>
@@ -151,7 +151,7 @@
         alt="Logo GriyaZakat"
         class="w-12 h-12"
         height="48"
-        src="https://reygenteng.github.io/reybelirbx/favicon.ico"
+        src="https://griyazakat.biz.id/favicon.ico"
         width="48"
       />
       <h1 class="font-extrabold text-3xl leading-none select-none tracking-tight text-orange-500">
@@ -163,15 +163,15 @@
     </button>
   </header>
 
-  <nav class="bg-gray-50 border-b border-gray-200">
-    <div id="search-bar" class="hidden px-5 py-4 border-b border-gray-200">
+  <nav class="bg-orange-100 border-b border-orange-200">
+    <div id="search-bar" class="hidden px-5 py-4 border-b border-orange-200">
         <div class="flex">
-            <input type="text" id="search-input" placeholder="Cari artikel..." class="w-full px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <input type="text" id="search-input" placeholder="Cari artikel..." class="w-full px-4 py-2 border border-orange-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white">
             <button id="search-button" class="bg-orange-500 text-white px-4 py-2 rounded-r-md hover:bg-orange-600 transition-colors duration-200"><i class="fas fa-search"></i></button>
         </div>
     </div>
     <ul
-      class="flex justify-center space-x-12 py-4 font-semibold text-lg text-gray-900"
+      class="flex justify-center space-x-12 py-4 font-semibold text-lg text-orange-950"
     >
       <li>
         <a
@@ -198,32 +198,32 @@
   </nav>
 
   <main class="px-5 py-8 max-w-4xl mx-auto">
-    <p class="text-center mb-8 text-base text-gray-600 tracking-wide">
+    <p class="text-center mb-8 text-base text-orange-800 tracking-wide">
       Advertisement
     </p>
     
     <div id="daftar-artikel" class="space-y-6">
-      <p class="text-center text-gray-500">Memuat artikel...</p>
+      <p class="text-center text-orange-700">Memuat artikel...</p>
     </div>
 
-    <p class="text-center mt-12 mb-12 text-base text-gray-600 tracking-wide">
+    <p class="text-center mt-12 mb-12 text-base text-orange-800 tracking-wide">
       Advertisement
     </p>
   </main>
 
-  <footer class="bg-gray-900 text-gray-300 py-10 px-5">
+  <footer class="bg-orange-950 text-orange-100 py-10 px-5">
     <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
-        <h3 class="text-xl font-bold mb-4 text-orange-500">GriyaZakat</h3>
+        <h3 class="text-xl font-bold mb-4 text-orange-400">GriyaZakat</h3>
         <p class="text-sm">
           Situs ini menyajikan berbagai artikel dan informasi bermanfaat seputar zakat, infak, dan sedekah. Dapatkan panduan lengkap langsung dari sumbernya!
         </p>
         <p class="mt-4 text-sm flex items-center">
-          <i class="fas fa-envelope mr-2"></i> Info@GriyaZakat.com
+          <i class="fas fa-envelope mr-2"></i> adminsby@griyazakat.com
         </p>
       </div>
       <div>
-        <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+        <h3 class="text-xl font-bold mb-4 text-orange-300">Quick Links</h3>
         <ul class="space-y-2">
           <li><a href="index.html" class="hover:text-white transition-colors duration-200">Home</a></li>
           <li><a href="about.html" class="hover:text-white transition-colors duration-200">About</a></li>
@@ -231,8 +231,8 @@
         </ul>
       </div>
     </div>
-    <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
-      <p>Copyright © 2025 <a href="index.html" class="hover:text-white">GriyaZakat</a></p>
+    <div class="border-t border-orange-800 mt-8 pt-8 text-center text-sm">
+      <p>Copyright © 2025 <a href="index.html" class="hover:text-orange-400">GriyaZakat</a></p>
     </div>
   </footer>
 </body>
