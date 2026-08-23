@@ -15,6 +15,10 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap"
     rel="stylesheet"
   />
+
+  <!-- Memanggil konfigurasi API dari index.js -->
+  <script src="/api-config.js"></script>
+
   <style>
     body {
       font-family: "Inter", sans-serif;
@@ -26,20 +30,8 @@
     import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-database.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-analytics.js";
 
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDMrg2agHatw9REIXs0Pj-894UMhMB08NI",
-      authDomain: "databaseku-4e72e.firebaseapp.com",
-      databaseURL: "https://databaseku-4e72e-default-rtdb.firebaseio.com",
-      projectId: "databaseku-4e72e",
-      storageBucket: "databaseku-4e72e.firebasestorage.app",
-      messagingSenderId: "586627388924",
-      appId: "1:586627388924:web:8b39ecd9f5e5d34ee78e79",
-      measurementId: "G-JSP6R4FN49"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
+    // Menggunakan konfigurasi dari index.js
+    const app = initializeApp(window.FIREBASE_CONFIG);
     const analytics = getAnalytics(app);
     const db = getDatabase(app);
 
