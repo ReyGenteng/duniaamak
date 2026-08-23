@@ -46,8 +46,8 @@ app.get('/gzi/contact', (req, res) => {
     res.redirect('/contact.html');
 });
 
-app.get('/about.html', (req, res) => {
-    res.redirect('/gzi/about');
+app.get('/gzi/index.html', (req, res) => {
+    res.redirect('/');
 });
 
 // Handler untuk halaman utama (root)
