@@ -33,20 +33,20 @@ app.get('/dashboard/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'admin.html'));
 });
 
-app.get('/gzi/contact', (req, res) => {
+app.get('/fb/contact', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'contact.html'));
 });
 
-app.get('/gzi/about', (req, res) => {
+app.get('/fb/about', (req, res) => {
     res.sendFile(path.join(__dirname, 'view', 'about.html'));
 });
 
 // Redirect untuk URL yang salah
-app.get('/gzi/contact', (req, res) => {
+app.get('/fb/contact', (req, res) => {
     res.redirect('/contact.html');
 });
 
-app.get('/gzi/index.html', (req, res) => {
+app.get('/fb/index.html', (req, res) => {
     res.redirect('/');
 });
 
