@@ -33,6 +33,7 @@
     const tombolSimpan = document.getElementById('tombol-simpan');
     const tombolBatal = document.getElementById('tombol-batal');
     const daftarArtikelAdmin = document.getElementById('daftar-artikel-admin');
+    const tombolVideo = document.getElementById('tambah-video-btn');
     
     let currentEditKey = null; // Menyimpan ID artikel yang sedang diedit
     let allArticles = {}; // Menyimpan semua data artikel
@@ -58,6 +59,27 @@
           myWidget.open();
       }, false);
     };
+
+    // Fitur Tambah Video YouTube
+    tombolVideo.addEventListener('click', () => {
+      const url = prompt("Masukkan Link/URL Video YouTube:");
+      if (url) {
+        let videoId = "";
+        if (url.includes("youtu.be/")) {
+          videoId = url.split("youtu.be/")[1].split("?")[0];
+        } else if (url.includes("youtube.com/watch?v=")) {
+          videoId = url.split("v=")[1].split("&")[0];
+        }
+
+        if (videoId) {
+          const embedCode = `\n<div class="my-4 aspect-w-16 aspect-h-9"><iframe class="w-full h-64 md:h-96 rounded-lg shadow" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe></div>`;
+          isiInput.value += embedCode;
+          alert("Video YouTube berhasil ditambahkan ke isi artikel! 📽️");
+        } else {
+          alert("URL YouTube tidak valid. Coba salin ulang linknya ya!");
+        }
+      }
+    });
 
     // Fungsi Reset Form
     const resetForm = () => {
@@ -225,9 +247,14 @@
           placeholder="Tulis isi artikel di sini..."
           class="w-full px-4 py-3 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black bg-white"
         ></textarea>
-        <button id="upload_widget" class="bg-black text-white font-bold py-2 px-4 rounded-md hover:bg-neutral-800 transition-colors duration-200 mt-3">
-            <i class="fas fa-image mr-1"></i> Upload Foto
-        </button>
+        <div class="flex space-x-3 mt-3">
+          <button id="upload_widget" class="bg-black text-white font-bold py-2 px-4 rounded-md hover:bg-neutral-800 transition-colors duration-200">
+              <i class="fas fa-image mr-1"></i> Upload Foto
+          </button>
+          <button id="tambah-video-btn" class="bg-black text-white font-bold py-2 px-4 rounded-md hover:bg-neutral-800 transition-colors duration-200">
+              <i class="fas fa-video mr-1"></i> Tambah Video YouTube
+          </button>
+        </div>
       </div>
       
       <!-- Tombol Aksi -->
